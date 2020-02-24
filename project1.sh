@@ -48,11 +48,12 @@ do
 	echo "Would you like to play again (Y/N): "
 	read -r playagain
 	if [ $playagain == "Y" ] || [ $playagain == "y" ]
-		then
-			quit_game=false
-		else
-			echo Thanks for Playing!
-			quit_app = true
+	then
+		quit_game=false
+		clear
+	else
+		echo Thanks for Playing!
+		quit_app=true
 	fi
-	clear
 done
+exit 0
