@@ -9,18 +9,47 @@ then
 	    exit 0
 fi
 
+
+#initialize variables
+loaded_guess=0
+loaded_complete_games=0
 quit_game=false
 quit_app=false
 guess=0
 playagain=""
-complete_games=0
 
+#path to HighLow.dat
 file="/home/alexander/Desktop/Programming/UNIX CLASS/project1/HighLow.dat"
-while IFS=: read -r f1 f2 f3 f4 f5 f6 f7
-do
+
+#load data
+var=0
+while read -r line; do
+    test="$line"
+    if [ $var == 0 ]
+    then
+    	loaded_guess=$test
+	else
+		loaded_complete_games=$test
+	fi
+    var=$((var+1))
+done < "$file"
+
+echo Total Guesses: $loaded_guess
+echo Total Complete Games: $loaded_complete_games
+echo Hisory loaded succesfully
+
+
+
+
+
+
+#while IFS=: read -r f1 f2 f3 f4 f5 f6 f7
+#do
+		#print "Guesses: "$f1
+		#print "games: "$f2
         # display fields using f1, f2,..,f7
-        printf 'Guesses: %s, Games Played: %s, Home Dir: %s\n' "$f1" "$f7" "$f6"
-done <"$file"
+        #printf 'Guesses: %s, Games Played: %s, Home Dir: %s\n' "$f1" "$f7" "$f6"
+#done <"$file"
 
 while [ $quit_app = false ]
 do
@@ -28,7 +57,8 @@ do
 	amount=0
 	while [ $quit_game = false ]
 	do
-		printf "input your guess: " 
+		#printf instead of echo to keep input on same line
+		printf "Input your guess: " 
 		read -r guess
 		if [ $guess -gt $1 ]
 		then
@@ -52,10 +82,14 @@ do
 				echo You got the number correct in $amount attempts!
 				quit_game=true
 			fi
-		fi
-
-	complete_games=$((complete_games+1))	
+		fi	
 	done
+	echo $amount
+
+
+	loaded_guess=$((loaded_guess+amount))
+	loaded_complete_games=$((loaded_complete_games+1))
+
 	printf "Would you like to play again (Y/N): "
 	read -r playagain
 	if [ $playagain == "Y" ] || [ $playagain == "y" ] || [ $playagain == "" ]
@@ -72,6 +106,8 @@ do
 		fi
 	fi
 done
-echo $amount >> HighLow.dat
-echo $complete_games >>HighLow.dat
+> HighLow.dat
+
+echo $loaded_guess >> HighLow.dat
+echo $loaded_complete_games >>HighLow.dat
 exit 0
