@@ -92,7 +92,7 @@ do
 
 	printf "Would you like to play again (Y/N): "
 	read -r playagain
-	if [ $playagain == "Y" ] || [ $playagain == "y" ] || [ $playagain == "" ]
+	if [ -z $playagain ] || [ $playagain == "Y" ] || [ $playagain == "y" ]
 	then
 		quit_game=false
 		clear
